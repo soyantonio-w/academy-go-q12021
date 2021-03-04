@@ -15,7 +15,30 @@ type LaunchPresenter struct {
 	entity.VideoLink				`json:"video_link"`
 }
 
+func NewLaunchPresenter(launch entity.Launch) LaunchPresenter {
+	return LaunchPresenter{
+		ID: launch.LaunchId,
+		LaunchDate: launch.LaunchDate,
+		LaunchSuccess: launch.LaunchSuccess,
+		VideoLink: launch.VideoLink,
+		MissionName: launch.MissionName,
+		RocketName: launch.RocketName,
+		LaunchDetails: launch.LaunchDetails,
+	}
+}
+
 func (p LaunchPresenter) Format() []byte {
+	response, err := json.Marshal(p)
+	if err != nil {
+		return []byte{}
+	}
+	return response
+}
+
+func FormatMany(p []LaunchPresenter) []byte {
+	if p == nil {
+		return []byte{}
+	}
 	response, err := json.Marshal(p)
 	if err != nil {
 		return []byte{}
