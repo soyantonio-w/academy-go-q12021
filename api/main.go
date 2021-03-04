@@ -4,10 +4,11 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/soyantonio-w/academy-go-q12021/api/handler"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/csv"
+	"log"
 	"net/http"
 )
 
-const httpAddr = ":8080"
+const httpAddr = "localhost:8080"
 
 func main() {
 	launchRepo := csv.NewRepository()
@@ -17,5 +18,5 @@ func main() {
 	r.HandleFunc("/launch/{id:[0-9]+}", handler.GetLaunch(launchRepo))
 
 	http.Handle("/", r)
-	_ = http.ListenAndServe(httpAddr, nil)
+	log.Fatal(http.ListenAndServe(httpAddr, nil))
 }
