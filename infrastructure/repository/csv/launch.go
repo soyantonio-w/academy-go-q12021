@@ -2,6 +2,7 @@ package csv
 
 import (
 	"encoding/csv"
+	"fmt"
 	"github.com/soyantonio-w/academy-go-q12021/entity"
 	"os"
 	"strconv"
@@ -12,6 +13,21 @@ type repository struct {
 
 func NewRepository() entity.LaunchRepo {
 	return &repository{}
+}
+
+func (repo *repository)Get(id entity.LaunchId)(entity.Launch, error)  {
+	launches, err := repo.GetLaunches()
+	if err != nil {
+		return entity.Launch{}, fmt.Errorf("non available launches")
+	}
+
+	for _, launch := range launches {
+		if launch.LaunchId == id {
+			return launch, nil
+		}
+	}
+
+	return entity.Launch{}, fmt.Errorf("non found launch with id %d", id)
 }
 
 func (repo *repository)GetLaunches()([]entity.Launch, error)  {

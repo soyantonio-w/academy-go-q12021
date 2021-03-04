@@ -15,13 +15,9 @@ type Launch struct {
 	RocketName
 }
 
-func ToLaunchId(id int) LaunchId {
-	var algo LaunchId = LaunchId(id)
-	return algo
-}
-
 type LaunchRepo interface {
 	GetLaunches() ([]Launch, error)
+	Get(id LaunchId) (Launch, error)
 }
 
 func NewLaunch(launchId int, details, date, missionName, videoLink, rocketName string, launchSuccess bool) (l Launch) {
