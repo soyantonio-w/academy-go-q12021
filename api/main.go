@@ -10,6 +10,7 @@ const httpAddr = ":8080"
 
 func main()  {
 	r := mux.NewRouter()
+	r.HandleFunc("/launches", handler.ListLaunches)
 	r.HandleFunc("/launch/{id:[0-9]+}", handler.GetLaunch)
 
 	http.Handle("/", r)

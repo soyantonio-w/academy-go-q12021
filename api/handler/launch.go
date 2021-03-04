@@ -9,6 +9,22 @@ import (
 	"strconv"
 )
 
+
+func ListLaunches(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Set("Content-Type", "application/json")
+
+	r := csv.NewRepository()
+	launches, _ := r.GetLaunches()
+
+	var presenters []presenter.LaunchPresenter
+	for _, launch := range launches {
+		p := presenter.NewLaunchPresenter(launch)
+		presenters = append(presenters, p)
+	}
+
+	writer.Write(presenter.FormatMany(presenters))
+}
+
 func GetLaunch(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(request)
