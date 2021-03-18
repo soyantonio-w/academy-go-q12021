@@ -18,6 +18,7 @@ type Launch struct {
 type LaunchRepo interface {
 	GetLaunches() ([]Launch, error)
 	Get(id LaunchId) (Launch, error)
+	SyncAll(launches []Launch) error
 }
 
 func NewLaunch(launchId int, details, date, missionName, videoLink, rocketName string, launchSuccess bool) (l Launch) {

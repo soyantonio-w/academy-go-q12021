@@ -155,3 +155,48 @@ func TestService_ListLaunches(t *testing.T) {
 		})
 	}
 }
+
+func TestService_SyncLaunches(t *testing.T) {
+	type fields struct {
+		repo entity.LaunchRepo
+	}
+	type args struct {
+		data *Service
+	}
+
+	mockedLaunches := []entity.Launch{{LaunchId: 4}, {LaunchId: 1}}
+	mockRepo := new(mocks.LaunchRepo)
+	mockRepo.On("SyncAll", mockedLaunches).Return(nil)
+
+	errorRepo := new(mocks.LaunchRepo)
+	errorRepo.On("GetLaunches").Return(mockedLaunches, fmt.Errorf("unexpected error"))
+
+	okRepo := new(mocks.LaunchRepo)
+	okRepo.On("GetLaunches").Return(mockedLaunches, nil)
+
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name:   "Should throw an error if the data repo could not get launches",
+			fields: fields{repo: mockRepo}, args: args{data: NewService(errorRepo)}, wantErr: true,
+		},
+		{
+			name:   "Should succeed when the list and sync are ok",
+			fields: fields{repo: mockRepo}, args: args{data: NewService(okRepo)}, wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := &Service{
+				repo: tt.fields.repo,
+			}
+			if err := s.SyncLaunches(tt.args.data); (err != nil) != tt.wantErr {
+				t.Errorf("SyncLaunches() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

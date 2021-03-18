@@ -19,6 +19,7 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/cache/launches", handler.ListLaunches(cacheLaunchService))
+	r.HandleFunc("/cache/sync", handler.SyncLaunches(cacheLaunchService, flightLaunchService))
 	r.HandleFunc("/cache/launch/{id:[0-9]+}", handler.GetLaunch(cacheLaunchService))
 
 	r.HandleFunc("/flight/launches", handler.ListLaunches(flightLaunchService))

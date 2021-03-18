@@ -32,3 +32,19 @@ func (s *Service) ListLaunches() ([]entity.Launch, error) {
 	}
 	return launches, nil
 }
+
+func (s *Service) SyncLaunches(data *Service) error {
+	launches, err := data.ListLaunches()
+
+	if err != nil {
+		return fmt.Errorf("could not sync launches")
+	}
+
+	err = s.repo.SyncAll(launches)
+
+	if err != nil {
+		return fmt.Errorf("could not sync launches")
+	}
+
+	return nil
+}

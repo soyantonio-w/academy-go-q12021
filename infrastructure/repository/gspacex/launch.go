@@ -140,6 +140,10 @@ func (repo *repository) GetLaunches() ([]entity.Launch, error) {
 	return launches, nil
 }
 
+func (repo *repository) SyncAll(launches []entity.Launch) error {
+	return nil
+}
+
 func (lp *launchParser) NewLaunch() (l entity.Launch) {
 	launchId, _ := strconv.Atoi(lp.Id)
 	return entity.NewLaunch(

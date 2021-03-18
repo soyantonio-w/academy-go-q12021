@@ -5,14 +5,20 @@ import (
 	"fmt"
 	"github.com/soyantonio-w/academy-go-q12021/entity"
 	"os"
+	"path/filepath"
 	"strconv"
+	"time"
 )
 
 type repository struct {
+	folder, filename string
 }
 
 func NewRepository() entity.LaunchRepo {
-	return &repository{}
+	return &repository{
+		folder:   "data",
+		filename: "spacex-launches.csv",
+	}
 }
 
 func (repo *repository) Get(id entity.LaunchId) (entity.Launch, error) {
@@ -31,7 +37,7 @@ func (repo *repository) Get(id entity.LaunchId) (entity.Launch, error) {
 }
 
 func (repo *repository) GetLaunches() ([]entity.Launch, error) {
-	csvFile, err := os.Open("data/spacex-launches.csv")
+	csvFile, err := os.Open(repo.getPath())
 
 	if err != nil {
 		return nil, err
@@ -59,6 +65,44 @@ func (repo *repository) GetLaunches() ([]entity.Launch, error) {
 		launches = append(launches, launch)
 	}
 	return launches, nil
+}
+
+func (repo *repository) SyncAll(launches []entity.Launch) error {
+	filename := fmt.Sprintf("spacex-launches-%d.csv", time.Now().Unix())
+	file, err := os.Create(repo.buildPath(filename))
+	if err != nil {
+		return fmt.Errorf("could not create file")
+	}
+	defer file.Close()
+
+	w := csv.NewWriter(file)
+	defer w.Flush()
+
+	for _, launch := range launches {
+		record := []string{
+			strconv.Itoa(int(launch.LaunchId)),
+			string(launch.LaunchDetails),
+			string(launch.LaunchDate),
+			string(launch.MissionName),
+			string(launch.VideoLink),
+			string(launch.RocketName),
+			strconv.FormatBool(bool(launch.LaunchSuccess)),
+		}
+		if err = w.Write(record); err != nil {
+			return fmt.Errorf("error writing record to file %s", filename)
+		}
+	}
+
+	repo.filename = filename
+	return nil
+}
+
+func (repo *repository) getPath() string {
+	return repo.buildPath(repo.filename)
+}
+
+func (repo *repository) buildPath(filename string) string {
+	return filepath.Join(repo.folder, filename)
 }
 
 func readLine(reader *csv.Reader) (line []string) {

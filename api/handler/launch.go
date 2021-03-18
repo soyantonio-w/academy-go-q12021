@@ -7,10 +7,24 @@ import (
 	"net/http"
 )
 
-func ListLaunches(service *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
+func SyncLaunches(s *launch.Service, serviceOfData *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
-		launches, _ := service.ListLaunches()
+		err := s.SyncLaunches(serviceOfData)
+
+		if err != nil {
+			writer.WriteHeader(http.StatusConflict)
+			return
+		}
+
+		writer.WriteHeader(http.StatusOK)
+	}
+}
+
+func ListLaunches(s *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+		launches, _ := s.ListLaunches()
 
 		var presenters []presenter.LaunchPresenter
 		for _, l := range launches {
@@ -22,10 +36,10 @@ func ListLaunches(service *launch.Service) func(writer http.ResponseWriter, requ
 	}
 }
 
-func GetLaunch(service *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
+func GetLaunch(s *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		vars := mux.Vars(request)
-		l, err := service.GetLaunch(vars["id"])
+		l, err := s.GetLaunch(vars["id"])
 
 		if err != nil {
 			writer.WriteHeader(http.StatusNotFound)
