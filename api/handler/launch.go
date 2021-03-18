@@ -28,7 +28,7 @@ func GetLaunch(service *launch.Service) func(writer http.ResponseWriter, request
 		l, err := service.GetLaunch(vars["id"])
 
 		if err != nil {
-			writer.WriteHeader(404)
+			writer.WriteHeader(http.StatusNotFound)
 			_, _ = writer.Write([]byte(err.Error()))
 			return
 		}
