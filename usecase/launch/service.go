@@ -27,5 +27,8 @@ func (s *Service) GetLaunch(launchId string) (entity.Launch, error) {
 
 func (s *Service) ListLaunches() ([]entity.Launch, error) {
 	launches, err := s.repo.GetLaunches()
-	return launches, err
+	if err != nil {
+		return []entity.Launch{}, err
+	}
+	return launches, nil
 }
