@@ -22,13 +22,13 @@ type LaunchRepo interface {
 
 func NewLaunch(launchId int, details, date, missionName, videoLink, rocketName string, launchSuccess bool) (l Launch) {
 	l = Launch{
-		LaunchId: LaunchId(launchId),
+		LaunchId:      LaunchId(launchId),
 		LaunchDetails: LaunchDetails(details),
-		LaunchDate: LaunchDate(date),
+		LaunchDate:    LaunchDate(date),
 		LaunchSuccess: LaunchSuccess(launchSuccess),
-		VideoLink: VideoLink(videoLink),
-		RocketName: RocketName(rocketName),
-		MissionName: MissionName(missionName),
+		VideoLink:     VideoLink(videoLink),
+		RocketName:    RocketName(rocketName),
+		MissionName:   MissionName(missionName),
 	}
 	return
 }

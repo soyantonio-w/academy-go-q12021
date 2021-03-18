@@ -15,7 +15,7 @@ func NewRepository() entity.LaunchRepo {
 	return &repository{}
 }
 
-func (repo *repository)Get(id entity.LaunchId)(entity.Launch, error)  {
+func (repo *repository) Get(id entity.LaunchId) (entity.Launch, error) {
 	launches, err := repo.GetLaunches()
 	if err != nil {
 		return entity.Launch{}, fmt.Errorf("non available launches")
@@ -30,7 +30,7 @@ func (repo *repository)Get(id entity.LaunchId)(entity.Launch, error)  {
 	return entity.Launch{}, fmt.Errorf("non found launch with id %d", id)
 }
 
-func (repo *repository)GetLaunches()([]entity.Launch, error)  {
+func (repo *repository) GetLaunches() ([]entity.Launch, error) {
 	csvFile, err := os.Open("data/spacex-launches.csv")
 
 	if err != nil {
@@ -44,7 +44,7 @@ func (repo *repository)GetLaunches()([]entity.Launch, error)  {
 	}
 
 	var launches []entity.Launch
-	for record := readLine(r); record != nil; record = readLine(r){
+	for record := readLine(r); record != nil; record = readLine(r) {
 		launchId, _ := strconv.Atoi(record[0])
 		success, _ := strconv.ParseBool(record[6])
 		launch := entity.NewLaunch(
@@ -55,7 +55,7 @@ func (repo *repository)GetLaunches()([]entity.Launch, error)  {
 			record[4],
 			record[5],
 			success,
-			)
+		)
 		launches = append(launches, launch)
 	}
 	return launches, nil

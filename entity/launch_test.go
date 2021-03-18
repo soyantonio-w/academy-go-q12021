@@ -26,7 +26,6 @@ func TestNewLaunch(t *testing.T) {
 	}
 }
 
-
 func expectString(t *testing.T, got, expect string) {
 	if got != expect {
 		t.Errorf("Expected %s, got %s", expect, got)

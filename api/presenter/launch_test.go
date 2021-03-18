@@ -6,13 +6,13 @@ import (
 
 func TestLaunch(t *testing.T) {
 	p := LaunchPresenter{
-		ID: 2,
-		LaunchDate: "",
+		ID:            2,
+		LaunchDate:    "",
 		LaunchDetails: "",
 		LaunchSuccess: false,
-		VideoLink: "",
-		RocketName: "",
-		MissionName: "",
+		VideoLink:     "",
+		RocketName:    "",
+		MissionName:   "",
 	}
 	expect := "{" +
 		"\"id\":2," +
@@ -24,21 +24,20 @@ func TestLaunch(t *testing.T) {
 		"\"video_link\":\"\"" +
 		"}"
 
-	if got := string(p.Format()); got != expect{
+	if got := string(p.Format()); got != expect {
 		t.Errorf("Expect %s, got %s", expect, got)
 	}
 }
 
-
 func TestLaunchMany(t *testing.T) {
 	p := LaunchPresenter{
-		ID: 2,
-		LaunchDate: "",
+		ID:            2,
+		LaunchDate:    "",
 		LaunchDetails: "",
 		LaunchSuccess: false,
-		VideoLink: "",
-		RocketName: "",
-		MissionName: "",
+		VideoLink:     "",
+		RocketName:    "",
+		MissionName:   "",
 	}
 	expect := "[{" +
 		"\"id\":2," +
@@ -50,7 +49,7 @@ func TestLaunchMany(t *testing.T) {
 		"\"video_link\":\"\"" +
 		"}]"
 
-	if got := string(FormatMany([]LaunchPresenter{p})); got != expect{
+	if got := string(FormatMany([]LaunchPresenter{p})); got != expect {
 		t.Errorf("Expect %s, got %s", expect, got)
 	}
 }
