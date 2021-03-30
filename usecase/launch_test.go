@@ -19,14 +19,14 @@ func TestNewService(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *Service
+		want *LaunchUseCase
 	}{
 		{name: "Should create a service with the given repo", args: args{
 			r: mockRepo,
-		}, want: &Service{
+		}, want: &LaunchUseCase{
 			repo: mockRepo,
 		}},
-		{name: "Should create a service with nil repo", args: args{}, want: &Service{}},
+		{name: "Should create a service with nil repo", args: args{}, want: &LaunchUseCase{}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -85,7 +85,7 @@ func TestService_GetLaunch(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Service{
+			s := &LaunchUseCase{
 				repo: tt.fields.repo,
 			}
 			got, err := s.GetLaunch(tt.args.launchId)
@@ -142,7 +142,7 @@ func TestService_ListLaunches(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Service{
+			s := &LaunchUseCase{
 				repo: tt.fields.repo,
 			}
 			got, err := s.ListLaunches()
@@ -162,7 +162,7 @@ func TestService_SyncLaunches(t *testing.T) {
 		repo entity.LaunchRepo
 	}
 	type args struct {
-		data *Service
+		data *LaunchUseCase
 	}
 
 	mockedLaunches := []entity.Launch{{LaunchId: 4}, {LaunchId: 1}}
@@ -192,7 +192,7 @@ func TestService_SyncLaunches(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Service{
+			s := &LaunchUseCase{
 				repo: tt.fields.repo,
 			}
 			if err := s.SyncLaunches(tt.args.data); (err != nil) != tt.wantErr {

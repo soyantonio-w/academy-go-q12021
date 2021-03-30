@@ -10,7 +10,7 @@ import (
 )
 
 // SyncLaunches - provides the logic to sync launches and return and http response
-func SyncLaunches(s *usecase.Service, serviceOfData *usecase.Service) func(writer http.ResponseWriter, request *http.Request) {
+func SyncLaunches(s *usecase.LaunchUseCase, serviceOfData *usecase.LaunchUseCase) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		err := s.SyncLaunches(serviceOfData)
@@ -25,7 +25,7 @@ func SyncLaunches(s *usecase.Service, serviceOfData *usecase.Service) func(write
 }
 
 // ListLaunches - provides the logic to list all launches and return them as a http response
-func ListLaunches(s *usecase.Service) func(writer http.ResponseWriter, request *http.Request) {
+func ListLaunches(s *usecase.LaunchUseCase) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		launches, _ := s.ListLaunches()
@@ -42,7 +42,7 @@ func ListLaunches(s *usecase.Service) func(writer http.ResponseWriter, request *
 }
 
 // GetLaunch - provides the logic to get only a launch as a http response
-func GetLaunch(s *usecase.Service) func(writer http.ResponseWriter, request *http.Request) {
+func GetLaunch(s *usecase.LaunchUseCase) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		vars := mux.Vars(request)
 		l, err := s.GetLaunch(vars["id"])
