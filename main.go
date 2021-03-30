@@ -12,8 +12,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Move outside the main file
-
 // TODO move this to config file - .conf (viper)
 const httpAddr = "localhost:8080"
 const spacexAPI = "https://api.spacex.land/graphql/"
