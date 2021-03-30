@@ -35,8 +35,13 @@ func (h *Handler) SyncLaunches(writer http.ResponseWriter, request *http.Request
 // ListLaunches - provides the logic to list all launches and return them as a http response
 func (h *Handler) ListLaunches(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
-	launches, _ := h.useCase.ListLaunches()
-	// Manage errors
+	launches, err := h.useCase.ListLaunches()
+
+	if err != nil {
+		writer.WriteHeader(http.StatusNotFound)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
 
 	var presenters []presenter.LaunchPresenter
 	for _, l := range launches {
