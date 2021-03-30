@@ -18,11 +18,11 @@ func New(flight Handler, cache Handler) *mux.Router {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/cache/launch/{id:[0-9]+}", cache.GetLaunch).Methods("GET")
-	r.HandleFunc("/cache/launches", cache.ListLaunches).Methods("GET")
-	r.HandleFunc("/cache/sync", cache.SyncLaunches).Methods("GET")
+	r.HandleFunc("/cache/launches/sync", cache.SyncLaunches).Methods("GET")
+	r.HandleFunc("/cache/launches/list", cache.ListLaunches).Methods("GET")
 
 	r.HandleFunc("/flight/launch/{id:[0-9]+}", flight.GetLaunch).Methods("GET")
-	r.HandleFunc("/flight/launches", flight.ListLaunches).Methods("GET")
+	r.HandleFunc("/flight/launches/list", flight.ListLaunches).Methods("GET")
 
 	return r
 }
