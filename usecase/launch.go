@@ -38,6 +38,16 @@ func (s *LaunchUseCase) ListLaunches() ([]entity.Launch, error) {
 	return launches, nil
 }
 
+// FilterLaunches - returns all the launches that matches with the query
+func (s *LaunchUseCase) FilterLaunches(filterType string, items int, itemsPerWorker int) ([]entity.Launch, error) {
+	launches, err := s.repo.GetLaunches()
+	if err != nil {
+		return []entity.Launch{}, err
+	}
+
+	return launches, nil
+}
+
 // ListLaunches - loads all the launches from the provided launch use case
 func (s *LaunchUseCase) SyncLaunches(data *LaunchUseCase) error {
 	launches, err := data.ListLaunches()

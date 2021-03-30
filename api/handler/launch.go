@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/soyantonio-w/academy-go-q12021/api/presenter"
 	"github.com/soyantonio-w/academy-go-q12021/usecase"
@@ -66,4 +67,44 @@ func (h *Handler) GetLaunch(writer http.ResponseWriter, request *http.Request) {
 	p := presenter.NewLaunchPresenter(l)
 	writer.Header().Set("Content-Type", "application/json")
 	_, _ = writer.Write(p.Format())
+}
+
+// FilterLaunches - returns the launches that matches with the query
+func (h *Handler) FilterLaunches(writer http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
+	writer.Header().Set("Content-Type", "application/json")
+
+	items, err := strconv.Atoi(vars["items"])
+	if err != nil {
+		writer.WriteHeader(http.StatusBadRequest)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
+
+	itemsPerWorkers, err := strconv.Atoi(vars["items_per_workers"])
+	if err != nil {
+		writer.WriteHeader(http.StatusBadRequest)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
+
+	launches, err := h.useCase.FilterLaunches(
+		vars["type"],
+		items,
+		itemsPerWorkers,
+	)
+
+	if err != nil {
+		writer.WriteHeader(http.StatusNotFound)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
+
+	var presenters []presenter.LaunchPresenter
+	for _, l := range launches {
+		p := presenter.NewLaunchPresenter(l)
+		presenters = append(presenters, p)
+	}
+
+	_, _ = writer.Write(presenter.FormatMany(presenters))
 }
