@@ -98,3 +98,68 @@ func Test_removeEvenLaunches(t *testing.T) {
 		})
 	}
 }
+
+func Test_filterLaunchesByType(t *testing.T) {
+	type args struct {
+		launches   []entity.Launch
+		filterType LaunchFilterType
+	}
+
+	evenLaunches := []entity.Launch{
+		{LaunchId: 0},
+		{LaunchId: 2},
+		{LaunchId: 4},
+	}
+
+	oddLaunches := []entity.Launch{
+		{LaunchId: 1},
+		{LaunchId: 7},
+		{LaunchId: 11},
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want []entity.Launch
+	}{
+		{
+			name: "Should not remove odd launches when 'odd' is provided",
+			args: args{
+				launches:   oddLaunches,
+				filterType: Odd,
+			},
+			want: oddLaunches,
+		},
+		{
+			name: "Should remove even launches when 'odd' is provided",
+			args: args{
+				launches:   evenLaunches,
+				filterType: Odd,
+			},
+			want: []entity.Launch{},
+		},
+		{
+			name: "Should not remove even launches when 'even' is provided",
+			args: args{
+				launches:   evenLaunches,
+				filterType: Even,
+			},
+			want: evenLaunches,
+		},
+		{
+			name: "Should remove odd launches when 'even' is provided",
+			args: args{
+				launches:   oddLaunches,
+				filterType: Even,
+			},
+			want: []entity.Launch{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := filterLaunchesByType(tt.args.launches, tt.args.filterType); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("filterLaunchesByType() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

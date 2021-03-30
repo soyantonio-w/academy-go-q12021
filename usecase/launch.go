@@ -45,7 +45,9 @@ func (s *LaunchUseCase) FilterLaunches(filterType string, items int, itemsPerWor
 		return []entity.Launch{}, err
 	}
 
-	return launches, nil
+	t := NewLaunchFilterType(filterType)
+
+	return filterLaunchesByType(launches, *t), nil
 }
 
 // ListLaunches - loads all the launches from the provided launch use case
