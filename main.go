@@ -9,9 +9,8 @@ import (
 	"github.com/soyantonio-w/academy-go-q12021/api/handler"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/csv"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/gspacex"
+	"github.com/soyantonio-w/academy-go-q12021/infrastructure/router"
 	"github.com/soyantonio-w/academy-go-q12021/usecase"
-
-	"github.com/gorilla/mux"
 )
 
 const (
@@ -31,13 +30,9 @@ func main() {
 	csvLaunchUseCase := usecase.LaunchNew(csvLaunchRepo)
 	spacexLaunchUseCase := usecase.LaunchNew(spacexLaunchRepo)
 
-	r := mux.NewRouter()
-	r.HandleFunc("/cache/launches", handler.ListLaunches(csvLaunchUseCase))
-	r.HandleFunc("/cache/sync", handler.SyncLaunches(csvLaunchUseCase, spacexLaunchUseCase))
-	r.HandleFunc("/cache/launch/{id:[0-9]+}", handler.GetLaunch(csvLaunchUseCase))
-
-	r.HandleFunc("/flight/launches", handler.ListLaunches(spacexLaunchUseCase))
-	r.HandleFunc("/flight/launch/{id:[0-9]+}", handler.GetLaunch(spacexLaunchUseCase))
+	flightHandler := handler.New(spacexLaunchUseCase, nil)
+	cacheHandler := handler.New(csvLaunchUseCase, spacexLaunchUseCase)
+	r := router.New(flightHandler, cacheHandler)
 
 	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(cfg.GetAppAddress(), nil))
