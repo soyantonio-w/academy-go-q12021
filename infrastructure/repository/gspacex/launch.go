@@ -11,6 +11,7 @@ type repository struct {
 	url string
 }
 
+// NewRepository - creates a graphql spacex launch repo
 func NewRepository(url string) entity.LaunchRepo {
 	return &repository{
 		url: url,
@@ -57,6 +58,7 @@ type graphqlVarsLaunches struct {
 	Limit int `json:"limit"`
 }
 
+// Get - tries to find a launch from the spacex api
 func (repo *repository) Get(id entity.LaunchId) (entity.Launch, error) {
 	query := `
 	query($id: ID!) {
@@ -93,9 +95,10 @@ func (repo *repository) Get(id entity.LaunchId) (entity.Launch, error) {
 		return entity.Launch{}, fmt.Errorf("non found launch with id %d", id)
 	}
 
-	return launchResponse.NewLaunch(), nil
+	return launchResponse.newLaunch(), nil
 }
 
+// GetLaunches - provides 100 launches from the spacex api
 func (repo *repository) GetLaunches() ([]entity.Launch, error) {
 	query := `
 		query ($limit: Int) {
@@ -135,17 +138,18 @@ func (repo *repository) GetLaunches() ([]entity.Launch, error) {
 	var launches []entity.Launch
 
 	for _, launch := range launchesResponse {
-		launches = append(launches, launch.NewLaunch())
+		launches = append(launches, launch.newLaunch())
 	}
 
 	return launches, nil
 }
 
+// SyncAll - do nothing
 func (repo *repository) SyncAll(launches []entity.Launch) error {
 	return nil
 }
 
-func (lp *launchParser) NewLaunch() (l entity.Launch) {
+func (lp *launchParser) newLaunch() (l entity.Launch) {
 	launchId, _ := strconv.Atoi(lp.Id)
 	return entity.NewLaunch(
 		launchId,

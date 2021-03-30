@@ -6,6 +6,7 @@ import (
 	"github.com/soyantonio-w/academy-go-q12021/entity"
 )
 
+// LaunchPresenter - holds the representation of a launch compatible with JSON
 type LaunchPresenter struct {
 	ID                   entity.LaunchId   `json:"id"`
 	LaunchDate           entity.LaunchDate `json:"launch_date"`
@@ -16,6 +17,7 @@ type LaunchPresenter struct {
 	entity.VideoLink     `json:"video_link"`
 }
 
+// NewLaunchPresenter - creates a launch representation from the Launch entity
 func NewLaunchPresenter(launch entity.Launch) LaunchPresenter {
 	return LaunchPresenter{
 		ID:            launch.LaunchId,
@@ -28,6 +30,7 @@ func NewLaunchPresenter(launch entity.Launch) LaunchPresenter {
 	}
 }
 
+// Format - creates a launch representation from the Launch entity
 func (p LaunchPresenter) Format() []byte {
 	response, err := json.Marshal(p)
 	if err != nil {
@@ -36,6 +39,7 @@ func (p LaunchPresenter) Format() []byte {
 	return response
 }
 
+// FormatMany - creates multiple launch representations from a batch of Launches entity
 func FormatMany(p []LaunchPresenter) []byte {
 	if p == nil {
 		return []byte{}

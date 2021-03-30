@@ -15,6 +15,7 @@ type repository struct {
 	folder, filename string
 }
 
+// NewRepository - creates a csv launch repo
 func NewRepository() entity.LaunchRepo {
 	return &repository{
 		folder:   "data",
@@ -22,6 +23,7 @@ func NewRepository() entity.LaunchRepo {
 	}
 }
 
+// Get - tries to find a launch in a csv file
 func (repo *repository) Get(id entity.LaunchId) (entity.Launch, error) {
 	launches, err := repo.GetLaunches()
 	if err != nil {
@@ -37,6 +39,7 @@ func (repo *repository) Get(id entity.LaunchId) (entity.Launch, error) {
 	return entity.Launch{}, fmt.Errorf("non found launch with id %d", id)
 }
 
+// GetLaunches - provides all the available launches in the csv
 func (repo *repository) GetLaunches() ([]entity.Launch, error) {
 	csvFile, err := os.Open(repo.getPath())
 
@@ -68,6 +71,7 @@ func (repo *repository) GetLaunches() ([]entity.Launch, error) {
 	return launches, nil
 }
 
+// SyncAll - creates a csv file with the provided launches
 func (repo *repository) SyncAll(launches []entity.Launch) error {
 	filename := fmt.Sprintf("spacex-launches-%d.csv", time.Now().Unix())
 	file, err := os.Create(repo.buildPath(filename))

@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Add comment to exported functions
+// SyncLaunches - provides the logic to sync launches and return and http response
 func SyncLaunches(s *launch.Service, serviceOfData *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
@@ -24,6 +24,7 @@ func SyncLaunches(s *launch.Service, serviceOfData *launch.Service) func(writer 
 	}
 }
 
+// ListLaunches - provides the logic to list all launches and return them as a http response
 func ListLaunches(s *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
@@ -40,6 +41,7 @@ func ListLaunches(s *launch.Service) func(writer http.ResponseWriter, request *h
 	}
 }
 
+// GetLaunch - provides the logic to get only a launch as a http response
 func GetLaunch(s *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		vars := mux.Vars(request)
