@@ -4,13 +4,13 @@ import (
 	"net/http"
 
 	"github.com/soyantonio-w/academy-go-q12021/api/presenter"
-	"github.com/soyantonio-w/academy-go-q12021/usecase/launch"
+	"github.com/soyantonio-w/academy-go-q12021/usecase"
 
 	"github.com/gorilla/mux"
 )
 
 // SyncLaunches - provides the logic to sync launches and return and http response
-func SyncLaunches(s *launch.Service, serviceOfData *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
+func SyncLaunches(s *usecase.Service, serviceOfData *usecase.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		err := s.SyncLaunches(serviceOfData)
@@ -25,7 +25,7 @@ func SyncLaunches(s *launch.Service, serviceOfData *launch.Service) func(writer 
 }
 
 // ListLaunches - provides the logic to list all launches and return them as a http response
-func ListLaunches(s *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
+func ListLaunches(s *usecase.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		launches, _ := s.ListLaunches()
@@ -42,7 +42,7 @@ func ListLaunches(s *launch.Service) func(writer http.ResponseWriter, request *h
 }
 
 // GetLaunch - provides the logic to get only a launch as a http response
-func GetLaunch(s *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
+func GetLaunch(s *usecase.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		vars := mux.Vars(request)
 		l, err := s.GetLaunch(vars["id"])

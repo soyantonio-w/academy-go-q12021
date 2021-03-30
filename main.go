@@ -9,7 +9,7 @@ import (
 	"github.com/soyantonio-w/academy-go-q12021/api/handler"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/csv"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/gspacex"
-	"github.com/soyantonio-w/academy-go-q12021/usecase/launch"
+	"github.com/soyantonio-w/academy-go-q12021/usecase"
 
 	"github.com/gorilla/mux"
 )
@@ -25,8 +25,8 @@ func main() {
 		os.Exit(ExitCouldNotLoadConfigFile)
 	}
 
-	cacheLaunchService := launch.NewService(csv.NewRepository())
-	flightLaunchService := launch.NewService(gspacex.NewRepository(cfg.GetSpacexAddress()))
+	cacheLaunchService := usecase.NewService(csv.NewRepository())
+	flightLaunchService := usecase.NewService(gspacex.NewRepository(cfg.GetSpacexAddress()))
 
 	r := mux.NewRouter()
 	r.HandleFunc("/cache/launches", handler.ListLaunches(cacheLaunchService))

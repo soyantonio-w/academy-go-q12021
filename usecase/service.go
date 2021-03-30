@@ -1,4 +1,4 @@
-package launch
+package usecase
 
 import (
 	"fmt"
