@@ -30,8 +30,8 @@ func TestNewService(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewService(tt.args.r); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewService() = %v, want %v", got, tt.want)
+			if got := LaunchNew(tt.args.r); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("LaunchNew() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -183,11 +183,11 @@ func TestService_SyncLaunches(t *testing.T) {
 	}{
 		{
 			name:   "Should throw an error if the data repo could not get launches",
-			fields: fields{repo: mockRepo}, args: args{data: NewService(errorRepo)}, wantErr: true,
+			fields: fields{repo: mockRepo}, args: args{data: LaunchNew(errorRepo)}, wantErr: true,
 		},
 		{
 			name:   "Should succeed when the list and sync are ok",
-			fields: fields{repo: mockRepo}, args: args{data: NewService(okRepo)}, wantErr: false,
+			fields: fields{repo: mockRepo}, args: args{data: LaunchNew(okRepo)}, wantErr: false,
 		},
 	}
 	for _, tt := range tests {

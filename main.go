@@ -25,8 +25,8 @@ func main() {
 		os.Exit(ExitCouldNotLoadConfigFile)
 	}
 
-	cacheLaunchService := usecase.NewService(csv.NewRepository())
-	flightLaunchService := usecase.NewService(gspacex.NewRepository(cfg.GetSpacexAddress()))
+	cacheLaunchService := usecase.LaunchNew(csv.NewRepository())
+	flightLaunchService := usecase.LaunchNew(gspacex.NewRepository(cfg.GetSpacexAddress()))
 
 	r := mux.NewRouter()
 	r.HandleFunc("/cache/launches", handler.ListLaunches(cacheLaunchService))

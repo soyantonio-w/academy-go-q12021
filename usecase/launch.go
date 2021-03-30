@@ -12,8 +12,8 @@ type LaunchUseCase struct {
 	repo entity.LaunchRepo
 }
 
-// NewService - creates a launch use case
-func NewService(r entity.LaunchRepo) *LaunchUseCase {
+// LaunchNew - creates a launch use case
+func LaunchNew(r entity.LaunchRepo) *LaunchUseCase {
 	return &LaunchUseCase{
 		repo: r,
 	}
