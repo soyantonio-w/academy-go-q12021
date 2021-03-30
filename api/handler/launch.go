@@ -1,12 +1,15 @@
 package handler
 
 import (
-	"github.com/gorilla/mux"
+	"net/http"
+
 	"github.com/soyantonio-w/academy-go-q12021/api/presenter"
 	"github.com/soyantonio-w/academy-go-q12021/usecase/launch"
-	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
+// Add comment to exported functions
 func SyncLaunches(s *launch.Service, serviceOfData *launch.Service) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
@@ -25,6 +28,7 @@ func ListLaunches(s *launch.Service) func(writer http.ResponseWriter, request *h
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		launches, _ := s.ListLaunches()
+		// Manage errors
 
 		var presenters []presenter.LaunchPresenter
 		for _, l := range launches {

@@ -1,19 +1,26 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
+	"log"
+	"net/http"
+
 	"github.com/soyantonio-w/academy-go-q12021/api/handler"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/csv"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/gspacex"
 	"github.com/soyantonio-w/academy-go-q12021/usecase/launch"
-	"log"
-	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
+// Move outside the main file
+
+// TODO move this to config file - .conf (viper)
 const httpAddr = "localhost:8080"
 const spacexAPI = "https://api.spacex.land/graphql/"
 
 func main() {
+	// cfg := config.Load()
+
 	cacheLaunchService := launch.NewService(csv.NewRepository())
 	flightLaunchService := launch.NewService(gspacex.NewRepository(spacexAPI))
 

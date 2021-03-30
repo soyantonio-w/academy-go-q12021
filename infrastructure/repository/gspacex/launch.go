@@ -2,8 +2,9 @@ package gspacex
 
 import (
 	"fmt"
-	"github.com/soyantonio-w/academy-go-q12021/entity"
 	"strconv"
+
+	"github.com/soyantonio-w/academy-go-q12021/entity"
 )
 
 type repository struct {

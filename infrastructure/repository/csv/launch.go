@@ -3,11 +3,12 @@ package csv
 import (
 	"encoding/csv"
 	"fmt"
-	"github.com/soyantonio-w/academy-go-q12021/entity"
 	"os"
 	"path/filepath"
 	"strconv"
 	"time"
+
+	"github.com/soyantonio-w/academy-go-q12021/entity"
 )
 
 type repository struct {

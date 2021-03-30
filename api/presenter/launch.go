@@ -2,6 +2,7 @@ package presenter
 
 import (
 	"encoding/json"
+
 	"github.com/soyantonio-w/academy-go-q12021/entity"
 )
 

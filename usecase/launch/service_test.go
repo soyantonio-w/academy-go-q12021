@@ -2,10 +2,11 @@ package launch
 
 import (
 	"fmt"
-	"github.com/soyantonio-w/academy-go-q12021/entity"
-	"github.com/soyantonio-w/academy-go-q12021/entity/mocks"
 	"reflect"
 	"testing"
+
+	"github.com/soyantonio-w/academy-go-q12021/entity"
+	"github.com/soyantonio-w/academy-go-q12021/entity/mocks"
 )
 
 func TestNewService(t *testing.T) {
