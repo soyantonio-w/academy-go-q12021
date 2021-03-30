@@ -1,0 +1,5 @@
+http_port: 8080
+host: localhost
+services:
+  spacex_api:
+    host: https://api.spacex.land

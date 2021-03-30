@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/soyantonio-w/academy-go-q12021/api/config"
 	"github.com/soyantonio-w/academy-go-q12021/api/handler"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/csv"
 	"github.com/soyantonio-w/academy-go-q12021/infrastructure/repository/gspacex"
@@ -12,15 +14,19 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// TODO move this to config file - .conf (viper)
-const httpAddr = "localhost:8080"
-const spacexAPI = "https://api.spacex.land/graphql/"
+const (
+	ExitCouldNotLoadConfigFile = iota + 1
+)
 
 func main() {
-	// cfg := config.Load()
+	cfg, err := config.Load("config.yml")
+	if err != nil {
+		log.Printf("could not load config %v", err)
+		os.Exit(ExitCouldNotLoadConfigFile)
+	}
 
 	cacheLaunchService := launch.NewService(csv.NewRepository())
-	flightLaunchService := launch.NewService(gspacex.NewRepository(spacexAPI))
+	flightLaunchService := launch.NewService(gspacex.NewRepository(cfg.GetSpacexAddress()))
 
 	r := mux.NewRouter()
 	r.HandleFunc("/cache/launches", handler.ListLaunches(cacheLaunchService))
@@ -31,5 +37,5 @@ func main() {
 	r.HandleFunc("/flight/launch/{id:[0-9]+}", handler.GetLaunch(flightLaunchService))
 
 	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(httpAddr, nil))
+	log.Fatal(http.ListenAndServe(cfg.GetAppAddress(), nil))
 }
