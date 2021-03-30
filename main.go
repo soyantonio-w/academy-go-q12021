@@ -25,16 +25,19 @@ func main() {
 		os.Exit(ExitCouldNotLoadConfigFile)
 	}
 
-	cacheLaunchService := usecase.LaunchNew(csv.NewRepository())
-	flightLaunchService := usecase.LaunchNew(gspacex.NewRepository(cfg.GetSpacexAddress()))
+	csvLaunchRepo := csv.NewRepository()
+	spacexLaunchRepo := gspacex.NewRepository(cfg.GetSpacexAddress())
+
+	csvLaunchUseCase := usecase.LaunchNew(csvLaunchRepo)
+	spacexLaunchUseCase := usecase.LaunchNew(spacexLaunchRepo)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/cache/launches", handler.ListLaunches(cacheLaunchService))
-	r.HandleFunc("/cache/sync", handler.SyncLaunches(cacheLaunchService, flightLaunchService))
-	r.HandleFunc("/cache/launch/{id:[0-9]+}", handler.GetLaunch(cacheLaunchService))
+	r.HandleFunc("/cache/launches", handler.ListLaunches(csvLaunchUseCase))
+	r.HandleFunc("/cache/sync", handler.SyncLaunches(csvLaunchUseCase, spacexLaunchUseCase))
+	r.HandleFunc("/cache/launch/{id:[0-9]+}", handler.GetLaunch(csvLaunchUseCase))
 
-	r.HandleFunc("/flight/launches", handler.ListLaunches(flightLaunchService))
-	r.HandleFunc("/flight/launch/{id:[0-9]+}", handler.GetLaunch(flightLaunchService))
+	r.HandleFunc("/flight/launches", handler.ListLaunches(spacexLaunchUseCase))
+	r.HandleFunc("/flight/launch/{id:[0-9]+}", handler.GetLaunch(spacexLaunchUseCase))
 
 	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(cfg.GetAppAddress(), nil))
