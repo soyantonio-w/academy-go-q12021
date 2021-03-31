@@ -141,7 +141,7 @@ func worker(
 		case <-shutdown:
 			workerDone <- id
 			wg.Done()
-			log.Printf("worker %d finished job wii", id)
+			log.Printf("worker %d finished job", id)
 			return
 		}
 	}
