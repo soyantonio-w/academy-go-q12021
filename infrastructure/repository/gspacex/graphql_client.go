@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// GraphqlQuery - holds the fields required by a graphql query
 type GraphqlQuery struct {
 	Query     string      `json:"query"`
 	Variables interface{} `json:"variables"`
@@ -19,6 +20,7 @@ type errorsParser struct {
 	} `json:"errors"`
 }
 
+// GraphqlClient - a graphql client capable to execute queries
 type GraphqlClient struct {
 	endpoint string
 }

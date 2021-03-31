@@ -2,6 +2,7 @@ package entity
 
 import "testing"
 
+// Generate mocks: mockery --name=LaunchRepo
 func TestNewLaunch(t *testing.T) {
 	expectedId := 21
 	expectedDetails := "details..."
