@@ -201,3 +201,39 @@ func TestService_SyncLaunches(t *testing.T) {
 		})
 	}
 }
+
+func Test_calculateRequiredWorkers(t *testing.T) {
+	type args struct {
+		items          int
+		itemsPerWorker int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "Zero workers",
+			args: args{
+				items:          0,
+				itemsPerWorker: 10,
+			},
+			want: 0,
+		},
+		{
+			name: "Two workers",
+			args: args{
+				items:          20,
+				itemsPerWorker: 10,
+			},
+			want: 2,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := calculateRequiredWorkers(tt.args.items, tt.args.itemsPerWorker); got != tt.want {
+				t.Errorf("calculateRequiredWorkers() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
